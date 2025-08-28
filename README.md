@@ -1,3 +1,38 @@
+# Nadir Brothers - Product Catalog
+
+Customer-facing product catalog for Nadir Brothers.
+
+## Features
+- Browse available products
+- Search products by name/description
+- Filter by availability
+- Responsive design
+- Contact information
+
+## Setup
+
+1. Install dependencies:
+```bash
+npm install
+```
+
+2. Create `.env` file:
+```bash
+REACT_APP_API_URL=http://localhost:5000/api
+```
+
+3. Start the development server:
+```bash
+npm start
+```
+
+## Backend
+This application requires the Nadir Brothers backend API to be running.
+Backend repository: [Contact for backend URL]
+
+## Deployment
+For production deployment, update `REACT_APP_API_URL` to point to your deployed backend.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
