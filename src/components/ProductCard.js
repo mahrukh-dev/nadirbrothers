@@ -5,7 +5,7 @@ export default function ProductCard({ product }) {
       <div className="relative overflow-hidden rounded-t-xl">
         {product.image ? (
           <img
-            src={`http://localhost:5000/uploads/${product.image}`}
+            src={product.image}
             alt={product.name}
             className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
           />
