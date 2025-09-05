@@ -29,21 +29,21 @@ export default function ProductDetails() {
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mb-4"></div>
-        <p className="text-gray-600 font-medium">Loading product details...</p>
+        <div className="w-16 h-16 mb-4 border-b-4 border-indigo-600 rounded-full animate-spin"></div>
+        <p className="font-medium text-gray-600">Loading product details...</p>
       </div>
     );
   }
 
   if (error || !product) {
     return (
-      <div className="bg-red-50 border border-red-200 rounded-xl p-8 text-center">
-        <div className="text-6xl mb-4">⚠️</div>
-        <h2 className="text-2xl font-bold text-red-800 mb-2">Product Not Found</h2>
-        <p className="text-red-600 mb-4">{error || "The product you're looking for doesn't exist."}</p>
+      <div className="p-8 text-center border border-red-200 bg-red-50 rounded-xl">
+        <div className="mb-4 text-6xl">⚠️</div>
+        <h2 className="mb-2 text-2xl font-bold text-red-800">Product Not Found</h2>
+        <p className="mb-4 text-red-600">{error || "The product you're looking for doesn't exist."}</p>
         <button
           onClick={() => navigate("/")}
-          className="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition-colors"
+          className="px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700"
         >
           Back to Products
         </button>
@@ -56,14 +56,14 @@ export default function ProductDetails() {
       {/* Back Button */}
       <button
         onClick={() => navigate("/")}
-        className="flex items-center space-x-2 text-indigo-600 hover:text-indigo-800 font-medium transition-colors"
+        className="flex items-center space-x-2 font-medium text-indigo-600 transition-colors hover:text-indigo-800"
       >
         <span className="text-xl">←</span>
         <span>Back to Products</span>
       </button>
 
       {/* Product Details */}
-      <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+      <div className="overflow-hidden bg-white shadow-lg rounded-2xl">
         <div className="md:flex">
           {/* Product Image */}
           <div className="md:w-1/2">
@@ -71,12 +71,12 @@ export default function ProductDetails() {
               <img
                 src={product.image}
                 alt={product.name}
-                className="w-full h-96 md:h-full object-cover"
+                className="object-cover w-full h-96 md:h-full"
               />
             ) : (
-              <div className="w-full h-96 md:h-full bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+              <div className="flex items-center justify-center w-full h-96 md:h-full bg-gradient-to-br from-gray-100 to-gray-200">
                 <div className="text-center text-gray-400">
-                  <div className="text-8xl mb-4">📦</div>
+                  <div className="mb-4 text-8xl">📦</div>
                   <p className="text-xl">No Image Available</p>
                 </div>
               </div>
@@ -84,11 +84,11 @@ export default function ProductDetails() {
           </div>
 
           {/* Product Information */}
-          <div className="md:w-1/2 p-8">
+          <div className="p-8 md:w-1/2">
             <div className="space-y-6">
               {/* Product Title & Status */}
               <div>
-                <h1 className="text-3xl font-bold text-gray-900 mb-4">{product.name}</h1>
+                <h1 className="mb-4 text-3xl font-bold text-gray-900">{product.name}</h1>
                 <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
                   product.isAvailable 
                     ? 'bg-green-100 text-green-800' 
@@ -101,18 +101,18 @@ export default function ProductDetails() {
               {/* Description */}
               {product.description && (
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">Product Description</h3>
-                  <p className="text-gray-600 leading-relaxed">{product.description}</p>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">Product Description</h3>
+                  <p className="leading-relaxed text-gray-600">{product.description}</p>
                 </div>
               )}
 
               {/* Product Details */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Product Information</h3>
+                <h3 className="mb-3 text-lg font-semibold text-gray-900">Product Information</h3>
                 <div className="space-y-2">
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="font-medium text-gray-700">Product ID:</span>
-                    <span className="text-gray-600 font-mono text-sm">{product._id}</span>
+                    <span className="font-mono text-sm text-gray-600">{product._id}</span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
                     <span className="font-medium text-gray-700">Availability:</span>
@@ -136,26 +136,26 @@ export default function ProductDetails() {
               </div>
 
               {/* Contact Section */}
-              <div className="bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Interested in this product?</h3>
-                <p className="text-gray-600 mb-4">
+              {/* <div className="p-6 bg-gradient-to-r from-indigo-50 to-purple-50 rounded-xl">
+                <h3 className="mb-3 text-lg font-semibold text-gray-900">Interested in this product?</h3>
+                <p className="mb-4 text-gray-600">
                   Contact us for more information, pricing, or to place an order.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row">
                   <a
                     href="tel:+1234567890"
-                    className="flex-1 bg-indigo-600 text-white text-center py-3 px-4 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors font-medium"
+                    className="flex-1 px-4 py-3 font-medium text-center text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     📞 Call Us
                   </a>
                   <a
                     href="mailto:info@nadirbrothers.com"
-                    className="flex-1 bg-white text-indigo-600 border-2 border-indigo-600 text-center py-3 px-4 rounded-lg hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors font-medium"
+                    className="flex-1 px-4 py-3 font-medium text-center text-indigo-600 transition-colors bg-white border-2 border-indigo-600 rounded-lg hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                   >
                     📧 Email Us
                   </a>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
