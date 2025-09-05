@@ -1,18 +1,29 @@
+import { useNavigate } from "react-router-dom";
+
 export default function ProductCard({ product }) {
+  const navigate = useNavigate();
+
+  const handleCardClick = () => {
+    navigate(`/product/${product._id}`);
+  };
+
   return (
-    <div className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
+    <div 
+      onClick={handleCardClick}
+      className="transition-all duration-300 transform bg-white border border-gray-100 shadow-lg cursor-pointer rounded-xl hover:shadow-xl hover:-translate-y-2"
+    >
       {/* Product Image */}
       <div className="relative overflow-hidden rounded-t-xl">
         {product.image ? (
           <img
             src={product.image}
             alt={product.name}
-            className="w-full h-48 object-cover transition-transform duration-300 hover:scale-110"
+            className="object-cover w-full h-48 transition-transform duration-300 hover:scale-110"
           />
         ) : (
-          <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+          <div className="flex items-center justify-center w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200">
             <div className="text-center text-gray-400">
-              <div className="text-4xl mb-2">📦</div>
+              <div className="mb-2 text-4xl">📦</div>
               <p className="text-sm">No Image</p>
             </div>
           </div>
@@ -32,16 +43,22 @@ export default function ProductCard({ product }) {
       
       {/* Product Info */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-gray-900 mb-3 line-clamp-1">
+        <h3 className="mb-3 text-xl font-bold text-gray-900 line-clamp-1">
           {product.name}
         </h3>
         
         {product.description && (
-          <p className="text-gray-600 text-sm mb-4 line-clamp-2 h-10">
+          <p className="h-10 mb-4 text-sm text-gray-600 line-clamp-2">
             {product.description}
           </p>
         )}
         
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-medium text-indigo-600">
+            Click to view details
+          </span>
+          <span className="text-2xl">→</span>
+        </div>
       </div>
     </div>
   );

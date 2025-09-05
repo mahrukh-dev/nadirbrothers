@@ -10,17 +10,21 @@ export default function ProductCatalog() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    console.log("🚀 ProductCatalog component mounted, fetching products...");
     fetchProducts();
   }, []);
 
   const fetchProducts = async () => {
     try {
       setError(null);
+      console.log("📡 Fetching products from API...");
       const res = await API.get("/products");
-      setProducts(res.data);
+      console.log("📦 Products received:", res.data);
+      console.log("📦 Number of products:", res.data?.length || 0);
+      setProducts(res.data || []);
     } catch (error) {
-      console.error("Error fetching products:", error);
-      setError("Failed to load products. Please check if the server is running.");
+      console.error("❌ Error fetching products:", error);
+      setError(`Failed to load products: ${error.message}`);
     } finally {
       setLoading(false);
     }
@@ -50,6 +54,14 @@ export default function ProductCatalog() {
         <div className="text-6xl mb-4">⚠️</div>
         <h2 className="text-2xl font-bold text-red-800 mb-2">Connection Error</h2>
         <p className="text-red-600 mb-4">{error}</p>
+        <div className="space-y-2 text-sm text-red-600 mb-4">
+          <p>Possible solutions:</p>
+          <ul className="list-disc list-inside space-y-1">
+            <li>Make sure backend is running on http://localhost:5000</li>
+            <li>Check if MongoDB Atlas is connected</li>
+            <li>Verify CORS settings in backend</li>
+          </ul>
+        </div>
         <button
           onClick={fetchProducts}
           className="bg-red-600 text-white px-6 py-2 rounded-lg hover:bg-red-700 transition-colors"
@@ -59,6 +71,8 @@ export default function ProductCatalog() {
       </div>
     );
   }
+
+  console.log("🎨 Rendering ProductCatalog with", products.length, "products");
 
   return (
     <div className="space-y-8">
@@ -124,11 +138,15 @@ export default function ProductCatalog() {
           <h3 className="text-2xl font-bold text-gray-900 mb-3">
             {products.length === 0 ? "No products available" : "No products found"}
           </h3>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600 text-lg mb-4">
             {products.length === 0 
-              ? "Check back later for new products" 
+              ? "Products added in admin panel will appear here" 
               : "Try adjusting your search criteria"}
           </p>
+          <div className="text-sm text-gray-500">
+            <p>Debug info: Total products in database: {products.length}</p>
+            <p>Backend URL: {process.env.REACT_APP_API_URL || "http://localhost:5000/api"}</p>
+          </div>
           {searchTerm && (
             <button
               onClick={() => {
