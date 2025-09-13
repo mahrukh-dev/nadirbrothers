@@ -136,14 +136,12 @@ export default function ProductDetails() {
                       {product.available ? "In Stock" : "Out of Stock"}
                     </span>
                   </div>
-                  {product.price && (
-                    <div className="flex justify-between py-2 border-b border-gray-100">
-                      <span className="font-medium text-gray-700">Price:</span>
-                      <span className="text-gray-600">
-                        Rs. {Number(product.price).toLocaleString()}
-                      </span>
-                    </div>
-                  )}
+                  <div className="flex justify-between py-2 border-b border-gray-100">
+                    <span className="font-medium text-gray-700">Price:</span>
+                    <span className="text-gray-600">
+                      Rs. {Number(product.price || 0).toLocaleString()}
+                    </span>
+                  </div>
                   {product.onOffer && (
                     <div className="flex justify-between py-2 border-b border-gray-100">
                       <span className="font-medium text-gray-700">Special Offer:</span>
@@ -172,3 +170,4 @@ export default function ProductDetails() {
     </div>
   );
 }
+
