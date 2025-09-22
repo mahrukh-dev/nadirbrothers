@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { ArrowLeft } from "lucide-react";
 import API from "../api";
 
 export default function ProductDetails() {
@@ -40,7 +41,9 @@ export default function ProductDetails() {
       <div className="p-8 text-center border border-red-200 bg-red-50 rounded-xl">
         <div className="mb-4 text-6xl">⚠️</div>
         <h2 className="mb-2 text-2xl font-bold text-red-800">Product Not Found</h2>
-        <p className="mb-4 text-red-600">{error || "The product you're looking for doesn't exist."}</p>
+        <p className="mb-4 text-red-600">
+          {error || "The product you're looking for doesn't exist."}
+        </p>
         <button
           onClick={() => navigate("/")}
           className="px-6 py-2 text-white transition-colors bg-indigo-600 rounded-lg hover:bg-indigo-700"
@@ -51,14 +54,18 @@ export default function ProductDetails() {
     );
   }
 
+  // ✅ Handle available vs isAvailable gracefully
+  const isAvailable =
+    product.isAvailable !== undefined ? product.isAvailable : product.available;
+
   return (
     <div className="max-w-6xl mx-auto space-y-8">
       {/* Back Button */}
       <button
         onClick={() => navigate("/")}
-        className="flex items-center space-x-2 font-medium text-indigo-600 transition-colors hover:text-indigo-800"
+        className="flex items-center space-x-2 font-medium text-indigo-600 transition-colors hover:text-indigo-800 group"
       >
-        <span className="text-xl">←</span>
+        <ArrowLeft className="w-5 h-5 transition-transform duration-200 group-hover:-translate-x-1" />
         <span>Back to Products</span>
       </button>
 
@@ -88,14 +95,20 @@ export default function ProductDetails() {
             <div className="space-y-6">
               {/* Product Title & Status */}
               <div>
-                <h1 className="mb-4 text-3xl font-bold text-gray-900">{product.name}</h1>
+                <h1 className="mb-4 text-3xl font-bold text-gray-900">
+                  {product.name}
+                </h1>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
-                    product.available 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-red-100 text-red-800'
-                  }`}>
-                    {product.available ? "✅ Available Now" : "❌ Currently Out of Stock"}
+                  <span
+                    className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${
+                      isAvailable
+                        ? "bg-green-100 text-green-800"
+                        : "bg-red-100 text-red-800"
+                    }`}
+                  >
+                    {isAvailable
+                      ? "✅ Available Now"
+                      : "❌ Currently Out of Stock"}
                   </span>
                   {product.onOffer && (
                     <span className="inline-flex items-center px-4 py-2 text-sm font-medium text-orange-800 bg-orange-100 rounded-full">
@@ -103,7 +116,7 @@ export default function ProductDetails() {
                     </span>
                   )}
                 </div>
-                
+
                 {/* Price */}
                 {product.price && (
                   <div className="mb-4">
@@ -117,23 +130,43 @@ export default function ProductDetails() {
               {/* Description */}
               {product.description && (
                 <div>
-                  <h3 className="mb-2 text-lg font-semibold text-gray-900">Product Description</h3>
-                  <p className="leading-relaxed text-gray-600">{product.description}</p>
+                  <h3 className="mb-2 text-lg font-semibold text-gray-900">
+                    Product Description
+                  </h3>
+                  <p className="leading-relaxed text-gray-600">
+                    {product.description}
+                  </p>
                 </div>
               )}
 
               {/* Product Details */}
               <div>
-                <h3 className="mb-3 text-lg font-semibold text-gray-900">Product Information</h3>
+                <h3 className="mb-3 text-lg font-semibold text-gray-900">
+                  Product Information
+                </h3>
                 <div className="space-y-2">
+                  {product.category && (
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="font-medium text-gray-700">
+                        Category:
+                      </span>
+                      <span className="text-gray-600">
+                        {typeof product.category === "object"
+                          ? product.category.name
+                          : product.category}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="font-medium text-gray-700">Product ID:</span>
-                    <span className="font-mono text-sm text-gray-600">{product._id}</span>
-                  </div>
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="font-medium text-gray-700">Availability:</span>
-                    <span className={product.available ? "text-green-600" : "text-red-600"}>
-                      {product.available ? "In Stock" : "Out of Stock"}
+                    <span className="font-medium text-gray-700">
+                      Availability:
+                    </span>
+                    <span
+                      className={
+                        isAvailable ? "text-green-600" : "text-red-600"
+                      }
+                    >
+                      {isAvailable ? "In Stock" : "Out of Stock"}
                     </span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-gray-100">
@@ -144,25 +177,36 @@ export default function ProductDetails() {
                   </div>
                   {product.onOffer && (
                     <div className="flex justify-between py-2 border-b border-gray-100">
-                      <span className="font-medium text-gray-700">Special Offer:</span>
+                      <span className="font-medium text-gray-700">
+                        Special Offer:
+                      </span>
                       <span className="text-orange-600">Yes</span>
                     </div>
                   )}
-                  <div className="flex justify-between py-2 border-b border-gray-100">
-                    <span className="font-medium text-gray-700">Added:</span>
-                    <span className="text-gray-600">
-                      {new Date(product.createdAt).toLocaleDateString()}
-                    </span>
-                  </div>
-                  <div className="flex justify-between py-2">
-                    <span className="font-medium text-gray-700">Last Updated:</span>
-                    <span className="text-gray-600">
-                      {new Date(product.updatedAt).toLocaleDateString()}
-                    </span>
-                  </div>
+                  {product.manufacturingDate && (
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="font-medium text-gray-700">
+                        Manufacturing Date:
+                      </span>
+                      <span className="text-gray-600">
+                        {new Date(
+                          product.manufacturingDate
+                        ).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )}
+                  {product.expiryDate && (
+                    <div className="flex justify-between py-2 border-b border-gray-100">
+                      <span className="font-medium text-gray-700">
+                        Expiry Date:
+                      </span>
+                      <span className="text-gray-600">
+                        {new Date(product.expiryDate).toLocaleDateString()}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -170,4 +214,3 @@ export default function ProductDetails() {
     </div>
   );
 }
-
