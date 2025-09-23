@@ -1,42 +1,43 @@
 import axios from "axios";
 
+// Use Railway backend URL for both development and production
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:5000/api",
-  timeout: 10000,
+  baseURL: process.env.REACT_APP_API_URL || "https://nbbackend-production.up.railway.app/api",
+  timeout: 30000,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
-// Add request interceptor for debugging
+// Request interceptor
 API.interceptors.request.use(
   (config) => {
-    console.log("🔄 Making request to:", config.baseURL + config.url);
-    console.log("🔄 Request method:", config.method);
+    console.log("🌐 Client making request to:", config.baseURL + config.url);
+    console.log("🔧 Environment:", process.env.NODE_ENV);
+    console.log("🔧 API URL:", config.baseURL);
     return config;
   },
   (error) => {
-    console.error("❌ Request error:", error);
+    console.error("❌ Client request error:", error);
     return Promise.reject(error);
   }
 );
 
-// Add response interceptor for error handling
+// Response interceptor
 API.interceptors.response.use(
   (response) => {
-    console.log("✅ Response received:", response.status, response.data);
+    console.log("✅ Client API Response received:", response.status);
     return response;
   },
   (error) => {
-    console.error("❌ API Error:", error);
-    console.error("❌ Error details:", {
-      message: error.message,
-      code: error.code,
-      response: error.response?.data,
-      status: error.response?.status,
-    });
+    console.error("❌ Client API Error:", error);
+    console.error("❌ Error response:", error.response?.data);
 
+    if (error.code === "ECONNABORTED") {
+      console.error("⏰ Request timeout - Server might be slow");
+    }
     if (error.code === "ERR_NETWORK") {
-      console.error(
-        "🔍 Network Error: Make sure your backend server is running on http://localhost:5000"
-      );
+      console.error("🌐 Network Error: Check server availability");
     }
     return Promise.reject(error);
   }

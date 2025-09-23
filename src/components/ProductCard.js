@@ -2,8 +2,18 @@
 
 import { Link } from "react-router-dom"
 import { ArrowRight } from "lucide-react"
+import { useCart } from "../context/CartContext"
 
 export default function ProductCard({ product, onDelete }) {
+  const { addToCart, getItemQuantity } = useCart()
+  const quantity = getItemQuantity(product._id)
+
+  const handleAddToCart = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    addToCart(product)
+  }
+
   const handleDelete = (e) => {
     e.preventDefault() // Prevent navigation when clicking delete
     e.stopPropagation()
@@ -12,10 +22,15 @@ export default function ProductCard({ product, onDelete }) {
     }
   }
 
-
-
   // ✅ Universal availability check
-  const isInStock = product.available === true || product.isAvailable === true || product.disavailable === false
+  const isInStock =
+  product?.isAvailable !== undefined
+    ? product.isAvailable
+    : product?.available !== undefined
+    ? product.available
+    : product?.disavailable !== undefined
+    ? !product.disavailable
+    : false;
 
   // Format dates if available
   const formatDate = (dateStr) => {
@@ -122,17 +137,35 @@ export default function ProductCard({ product, onDelete }) {
           </div>
         )}
 
-        
+        <div className="flex items-center justify-between">
+          <div className="flex items-baseline space-x-2">
+            {quantity > 0 && (
+              <span className="px-2 py-1 text-sm font-medium text-blue-800 bg-blue-100 rounded-full">
+                {quantity} in cart
+              </span>
+            )}
+          </div>
 
-      
-        <div className="pt-2">
-          <div className="inline-flex items-center justify-center w-full px-4 py-2.5 text-sm font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-xl hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 group-hover:bg-indigo-600 group-hover:text-white">
-            View Details
-            <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
+          <div className="flex pt-2 space-x-2">
+            <button
+              onClick={handleAddToCart}
+              disabled={!isInStock}
+              className={`px-4 py-2.5 text-sm font-semibold rounded-xl transition-all duration-200 ${
+                isInStock
+                  ? "bg-green-50 text-green-600 border border-green-200 hover:bg-green-100 hover:text-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+                  : "bg-gray-100 text-gray-400 border border-gray-200 cursor-not-allowed"
+              }`}
+            >
+              {isInStock ? "Add to Cart" : "Out of Stock"}
+            </button>
+            
+            <div className="inline-flex items-center justify-center px-4 py-2.5 text-sm font-semibold text-indigo-600 bg-indigo-50 border border-indigo-200 rounded-xl hover:bg-indigo-100 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-all duration-200 group-hover:bg-indigo-600 group-hover:text-white">
+              View Details
+              <ArrowRight className="w-4 h-4 ml-2 transition-transform duration-200 group-hover:translate-x-1" />
+            </div>
           </div>
         </div>
       </div>
-    
     </Link>
   )
 }
