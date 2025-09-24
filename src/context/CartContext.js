@@ -75,6 +75,7 @@ export const CartProvider = ({ children }) => {
         getTotalProducts,
         getTotalPrice,
         getItemQuantity,
+        clearCart,
       }}
     >
       {children}

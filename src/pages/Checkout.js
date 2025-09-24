@@ -83,7 +83,7 @@ const Checkout = () => {
             />
           </svg>
         </div>
-        <h2 className="mb-4 text-3xl font-bold text-gray-900">Order Confirmed!</h2>
+        <h2 className="mb-4 text-3xl font-bold text-gray-900">Order Placed!</h2>
         <p className="mb-8 text-gray-600">
           Thank you for your order. We'll process it shortly.
         </p>
@@ -118,7 +118,7 @@ const Checkout = () => {
                   <p className="text-gray-600">Qty: {item.quantity}</p>
                 </div>
                 <p className="font-semibold text-gray-900">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  Rs {(item.price * item.quantity).toFixed(2)}
                 </p>
               </div>
             ))}
@@ -127,7 +127,7 @@ const Checkout = () => {
             <div className="flex items-center justify-between">
               <span className="text-xl font-semibold text-gray-900">Total:</span>
               <span className="text-2xl font-bold text-blue-600">
-                ${getTotalPrice().toFixed(2)}
+                Rs {getTotalPrice().toFixed(2)}
               </span>
             </div>
           </div>
