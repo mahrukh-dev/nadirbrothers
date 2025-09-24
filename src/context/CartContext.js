@@ -35,14 +35,15 @@ export const CartProvider = ({ children }) => {
 
   // ✅ Get total number of items - ensure this recalculates on every render
   const getTotalItems = () => {
-    const total = cartItems.reduce((acc, item) => acc + item.quantity, 0);
-    console.log('Total items calculated:', total, cartItems);
-    return total;
+    return cartItems.reduce((total, item) => total + item.quantity, 0);
   };
 
-  // ✅ Get quantity of a specific product
-  const getItemQuantity = (id) => {
-    const item = cartItems.find((item) => item._id === id);
+  const getTotalProducts = () => {
+    return cartItems.length;
+  };
+
+  const getItemQuantity = (itemId) => {
+    const item = cartItems.find((item) => item._id === itemId);
     return item ? item.quantity : 0;
   };
 
@@ -69,11 +70,11 @@ export const CartProvider = ({ children }) => {
         cartItems,
         addToCart,
         removeFromCart,
-        clearCart,
-        getTotalPrice,
-        getTotalItems,
-        getItemQuantity, // ✅ added this
         updateQuantity,
+        getTotalItems,
+        getTotalProducts,
+        getTotalPrice,
+        getItemQuantity,
       }}
     >
       {children}

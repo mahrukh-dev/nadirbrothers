@@ -52,7 +52,7 @@ const Cart = () => {
               
               <div className="flex-1">
                 <h3 className="text-lg font-semibold text-gray-900">{item.name}</h3>
-                <p className="text-gray-600">${item.price}</p>
+                <p className="text-gray-600">Rs {item.price}</p>
               </div>
               
               <div className="flex items-center space-x-3">
@@ -80,7 +80,7 @@ const Cart = () => {
               
               <div className="text-right">
                 <p className="text-lg font-semibold text-gray-900">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  Rs {(item.price * item.quantity).toFixed(2)}
                 </p>
                 <button
                   onClick={() => removeFromCart(item._id)}
@@ -97,7 +97,7 @@ const Cart = () => {
           <div className="flex justify-between items-center mb-4">
             <span className="text-xl font-semibold text-gray-900">Total:</span>
             <span className="text-2xl font-bold text-blue-600">
-              ${getTotalPrice().toFixed(2)}
+              Rs {getTotalPrice().toFixed(2)}
             </span>
           </div>
           
